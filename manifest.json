@@ -3,10 +3,13 @@
     "version": "1.0",
     "manifest_version": 3,
     "description": "manage chrome tabs more conveniently",
-    "default_locale": "en",
     "permissions": ["storage", "tabs"],
+    "host_permissions": ["<all_urls>"],
     "action": {
         "default_title": "Tab Manager",
         "default_popup": "index.html"
+    },
+    "background": {
+        "service_worker": "background.js"
     }
 }
