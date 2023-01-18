@@ -1,15 +1,27 @@
 body {
-    height:400px;
+    height:600px;
     width:300px;
 }
 
-span {
+#header {
     font-size:medium;
     font-weight:bold;
 }
 
+span {
+    display:block;
+}
+
+span:hover {
+    background-color: lightgrey;
+}
+
 div {
     text-align:center;
+}
+
+#contents {
+    text-align:left;
 }
 
 li {
@@ -31,4 +43,9 @@ img.option:hover {
 #line {
     height:2px;
     background:black;
+}
+
+h3 {
+    padding:0px;
+    margin:0px;
 }

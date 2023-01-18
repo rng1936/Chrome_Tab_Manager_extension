@@ -1,3 +1,4 @@
+
 chrome.runtime.onMessage.addListener(
     function(request) {
         if (request.message === "Save") {
@@ -5,7 +6,7 @@ chrome.runtime.onMessage.addListener(
                 saveTab(tabs[0]);
             });
         }
-});
+})
 
 chrome.runtime.onMessage.addListener(
     function(request) {
@@ -16,24 +17,25 @@ chrome.runtime.onMessage.addListener(
                 }
             });
         }
-});
+})
 
 async function saveTab(tab) {
     let key = tab.index;
     await chrome.storage.sync.set({ [key] : JSON.stringify(tab)});
+    await display();
 }
 
 chrome.runtime.onMessage.addListener(
     async function(request) {
         if (request.message === "Load") {
-            await chrome.storage.sync.get(null, async (tabs) => {
-                for (let tab in tabs) {
-                    let current = JSON.parse(tabs[tab]); // tabs is the object and tab is the key
+            await chrome.storage.sync.get(null, async (keys) => {
+                for (let tab in keys) {
+                    let current = JSON.parse(keys[tab]); // parsing tab object associated with key
                     await chrome.tabs.create({'url': current.url});
                 }
             });
         }
-});
+})
 
 chrome.runtime.onMessage.addListener(
     function(request) {
@@ -41,8 +43,25 @@ chrome.runtime.onMessage.addListener(
             clearStorage();
         }
     }
-);
+)
 
 async function clearStorage() {
     await chrome.storage.sync.clear();
+    await chrome.runtime.sendMessage({message: "empty"});
+}
+
+chrome.runtime.onMessage.addListener(
+    async function (request) {
+        if (request.message === "Display") {
+            await display();
+        }
+})
+
+async function display() {
+    await chrome.storage.sync.get(null, async (keys) => {
+        for (let tab in keys) {
+            let current = JSON.parse(keys[tab]);
+            await chrome.runtime.sendMessage({title : current.title, url : current.url});
+        }
+    });
 }
