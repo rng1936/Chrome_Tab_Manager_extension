@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel = "stylesheet" href = "style.css"/>
     </head>
     <body>
-        <button id = "saveButton">Save current tab</button>
-        <button id = "saveAll">Save all tabs</button>
-        <button id = "viewTabs">View saved tabs</button>
-        <button id = "loadTabs">Load all tabs</button>
-        <button id = "clearTabs">Clear your saved tabs</button>
+        <div><span id = "header">Tab Manager</span></div>
+        <hr/>
+        <div id = "menu">
+            <li><img src = "/images/saveCurrentTab.png" class = "option" id = "saveButton"></li>
+            <li><img src = "/images/saveAll.png" class = "option" id = "saveAll"></li>
+            <li><img src = "/images/loadAll.png" class = "option" id = "loadTabs"></li>
+            <li><img src = "/images/remove.png" class = "option" id = "clearTabs"></li>
+        </div>
+        <hr id = "line"/>
     </body>
     <script src = "script.js"></script>
 </html>

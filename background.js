@@ -1,5 +1,5 @@
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(request) {
         if (request.message === "Save") {
             chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
                 saveTab(tabs[0]);
@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(
 });
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(request) {
         if (request.message === "Save all") {
             chrome.tabs.query({currentWindow: true}, async (tabs) => {
                 for (let index in tabs) {
@@ -24,9 +24,9 @@ async function saveTab(tab) {
 }
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    async function(request) {
         if (request.message === "Load") {
-            chrome.storage.sync.get(null, async (tabs) => {
+            await chrome.storage.sync.get(null, async (tabs) => {
                 for (let tab in tabs) {
                     let current = JSON.parse(tabs[tab]); // tabs is the object and tab is the key
                     await chrome.tabs.create({'url': current.url});
@@ -36,7 +36,7 @@ chrome.runtime.onMessage.addListener(
 });
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
+    function(request) {
         if (request.message === "Clear") {
             clearStorage();
         }

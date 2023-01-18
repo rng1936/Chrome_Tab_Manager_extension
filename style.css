@@ -1,0 +1,34 @@
+body {
+    height:400px;
+    width:300px;
+}
+
+span {
+    font-size:medium;
+    font-weight:bold;
+}
+
+div {
+    text-align:center;
+}
+
+li {
+    margin:0%;
+    padding:0%;
+    max-width:350px;
+    list-style:none;
+    display:inline;
+}
+
+img {
+    width:15%;
+}
+
+img.option:hover {
+    background-color: lightslategray;
+}
+
+#line {
+    height:2px;
+    background:black;
+}
