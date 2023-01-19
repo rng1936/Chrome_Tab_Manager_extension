@@ -6,7 +6,6 @@ let clearTabButton = document.getElementById("clearTabs");
 let tabList = document.getElementById("contents");
 
 saveButton.onclick = () => {
-    console.log("Save clicked");
     chrome.runtime.sendMessage({message: "Save"});
 }
 
