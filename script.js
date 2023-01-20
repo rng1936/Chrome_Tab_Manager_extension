@@ -58,7 +58,16 @@ window.onload = () => {
 }
 
 chrome.runtime.onMessage.addListener(
-    function(request) {
+    (request) => {
         if (request.message === "empty") tabList.innerHTML = "<h3>Saved Tabs:</h3>";
-        else tabList.innerHTML += "<a href = \"" + request.url + "\"><span>" + request.title + "</span></a>";
+        else {
+            let anchor = document.createElement("a");
+            anchor.setAttribute("key", request.key);
+            anchor.innerHTML = request.title;
+            anchor.href = request.url;
+            anchor.addEventListener("click", () => {
+                chrome.runtime.sendMessage({message: "Remove Saved Tab", key: anchor.getAttribute("key")});
+            })
+            tabList.appendChild(anchor);
+        }
 })

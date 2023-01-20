@@ -8,15 +8,6 @@ body {
     font-weight:bold;
 }
 
-span {
-    display:block;
-    font-size:medium;
-}
-
-span:hover {
-    background-color: lightgrey;
-}
-
 div {
     text-align:center;
 }
@@ -49,4 +40,14 @@ img.option:hover {
 h3 {
     padding:0px;
     margin:0px;
+}
+
+a {
+    display:block;
+    font-size:medium;
+}
+
+a:hover {
+    background-color: lightgrey;
+    text-decoration:line-through;
 }
