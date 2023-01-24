@@ -1,6 +1,6 @@
 body {
     height:600px;
-    width:300px;
+    width:350px;
 }
 
 #header {
@@ -50,4 +50,21 @@ a {
 a:hover {
     background-color: lightgrey;
     text-decoration:line-through;
+}
+
+input:hover {
+    background-color: lightgrey;
+}
+
+input:focus {
+    box-shadow: 0 0 5px blue;
+    border:none;
+    outline:0;
+}
+
+input {
+    display:inline;
+    width:50px;
+    padding:0;
+    margin:0;
 }
