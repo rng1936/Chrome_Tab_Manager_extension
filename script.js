@@ -55,7 +55,7 @@ clearTabButton.onclick = () => {
 }
 
 clearTabButton.onmouseover = () => {
-    options.innerHTML = "Clear All Saved Tabs";
+    options.innerHTML = "Delete All Saved Tabs";
 }
 
 clearTabButton.onmouseleave = () => {
