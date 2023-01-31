@@ -45,6 +45,7 @@ h3 {
 a {
     display:block;
     font-size:medium;
+    padding:2px
 }
 
 a:hover {
