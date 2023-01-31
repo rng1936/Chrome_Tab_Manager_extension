@@ -82,7 +82,7 @@ chrome.runtime.onMessage.addListener(
 })
 
 editFolder.onmouseover = () => {
-    options.innerHTML = "Edit/Save Folder Names";
+    options.innerHTML = "Edit/Save Folder Names (WIP)";
 }
 
 editFolder.onmouseleave = () => {
