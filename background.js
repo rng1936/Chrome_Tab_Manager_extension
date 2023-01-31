@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(
 })
 
 function saveTab(tab) {
-    let key = "idx" + tab.index;
+    let key = tab.url;
     chrome.storage.sync.get( [key], (result) => {
         if (Object.keys(result).length === 0) {
             chrome.storage.sync.set({[key] : tab}, () => {
@@ -67,7 +67,7 @@ function display() {
     chrome.storage.sync.get(null, (objOfKeys) => {
         for (var val in objOfKeys) {
             let curTab = objOfKeys[val];
-            chrome.runtime.sendMessage({title : curTab.title, url : curTab.url, key : "idx" + curTab.index});
+            chrome.runtime.sendMessage({title : curTab.title, url : curTab.url});
         }
     });
 }

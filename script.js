@@ -71,7 +71,7 @@ chrome.runtime.onMessage.addListener(
         if (request.message === "empty") tabList.innerHTML = "<h3>Saved Tabs:</h3>";
         else {
             let anchor = document.createElement("a");
-            anchor.setAttribute("key", request.key);
+            anchor.setAttribute("key", request.url);
             anchor.innerHTML = request.title;
             anchor.href = request.url;
             anchor.addEventListener("click", () => {
@@ -82,7 +82,7 @@ chrome.runtime.onMessage.addListener(
 })
 
 editFolder.onmouseover = () => {
-    options.innerHTML = "Edit/Save Folder Names (WIP)";
+    options.innerHTML = "Edit/Save Folder Names (WIP)"; // WIP
 }
 
 editFolder.onmouseleave = () => {
