@@ -1,21 +1,39 @@
 
 chrome.runtime.onMessage.addListener(
     async (request) => {
-        if (request.message === "Save") {
-            await chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-                saveTab(tabs[0]);
-            });
-        }
-})
-
-chrome.runtime.onMessage.addListener(
-    async (request) => {
-        if (request.message === "Save all") {
-            await chrome.tabs.query({currentWindow: true}, (tabs) => {
-                for (let tab of tabs) {
-                    saveTab(tab);
-                }
-            });
+        switch (request.message) {
+            case "Save":
+                await chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+                    saveTab(tabs[0]);
+                });
+                break;
+            case "Save all":
+                await chrome.tabs.query({currentWindow: true}, (tabs) => {
+                    for (let tab of tabs) {
+                        saveTab(tab);
+                    }
+                });
+                break;
+            case "Load":
+                chrome.storage.sync.get(null, (objOfKeys) => {
+                    for (var val in objOfKeys) {
+                        let curTab = objOfKeys[val];
+                        chrome.tabs.create({'url': curTab.url});
+                    }
+                });
+                break;
+            case "Clear":
+                clearStorage();
+                break;
+            case "Display":
+                display();
+                break;
+            case "Remove Saved Tab":
+                chrome.storage.sync.remove([request.key], () => {
+                    chrome.runtime.sendMessage({message: "empty"})
+                    display();
+                });
+                break;
         }
 })
 
@@ -30,38 +48,11 @@ function saveTab(tab) {
     });
 }
 
-chrome.runtime.onMessage.addListener(
-    (request) => {
-        if (request.message === "Load") {
-            chrome.storage.sync.get(null, (objOfKeys) => {
-                for (var val in objOfKeys) {
-                    let curTab = objOfKeys[val];
-                    chrome.tabs.create({'url': curTab.url});
-                }
-            });
-        }
-})
-
-chrome.runtime.onMessage.addListener(
-    (request) => {
-        if (request.message === "Clear") {
-            clearStorage();
-        }
-    }
-)
-
 function clearStorage() {
     chrome.storage.sync.clear(() => {
         chrome.runtime.sendMessage({message: "empty"});
     });
 }
-
-chrome.runtime.onMessage.addListener(
-    (request) => {
-        if (request.message === "Display") {
-            display();
-        }
-})
 
 function display() { 
     chrome.storage.sync.get(null, (objOfKeys) => {
@@ -71,14 +62,3 @@ function display() {
         }
     });
 }
-
-chrome.runtime.onMessage.addListener(
-    (request) => {
-        if (request.message === "Remove Saved Tab") {
-            chrome.storage.sync.remove([request.key], () => {
-                chrome.runtime.sendMessage({message: "empty"})
-                display();
-            });
-        }
-    }
-)
