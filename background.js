@@ -1,7 +1,8 @@
 
 chrome.runtime.onMessage.addListener(
     async (request) => {
-        switch (request.message) {
+        let action = request.message;
+        switch (action) {
             case "Save":
                 await chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
                     saveTab(tabs[0]);
@@ -30,7 +31,7 @@ chrome.runtime.onMessage.addListener(
                 break;
             case "Remove Saved Tab":
                 chrome.storage.sync.remove([request.key], () => {
-                    chrome.runtime.sendMessage({message: "empty"})
+                    chrome.runtime.sendMessage({message: "empty"});
                     display();
                 });
                 break;
@@ -39,10 +40,10 @@ chrome.runtime.onMessage.addListener(
 
 function saveTab(tab) {
     let key = tab.url;
-    chrome.storage.sync.get( [key], (result) => {
+    chrome.storage.sync.get([key], (result) => {
         if (Object.keys(result).length === 0) {
             chrome.storage.sync.set({[key] : tab}, () => {
-                chrome.runtime.sendMessage({title : tab.title, url : tab.url, key : key});
+                chrome.runtime.sendMessage({title : tab.title, url : tab.url});
             });
         }
     });
