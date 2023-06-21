@@ -69,15 +69,13 @@ function eventsSetup() {
                 case 4:
                     // Edit/Save Folders
                     renaming = !renaming;
-                    if (renaming) {
-                        for (let i = 0; i < foldInputs.length; ++i) {
-                            // enable and disable editing folder names
-                            foldInputs[i].disabled = !foldInputs[i].disabled;
+                    let newNames = [];
+                    for (let i = 0; i < foldInputs.length; ++i) {
+                        // enable and disable editing folder names
+                        foldInputs[i].disabled = !foldInputs[i].disabled;
+                        if (renaming) {
                             prev.push(foldInputs[i].value);
-                        }
-                    } else {
-                        let newNames = [];
-                        for (let i = 0; i < foldInputs.length; ++i) {
+                        } else {
                             const newFoldName = foldInputs[i].value;
                             const dupeLen = Array.from(foldInputs).filter(val => val.value === newFoldName);
                             
@@ -85,6 +83,8 @@ function eventsSetup() {
                             if (newFoldName.trim().length == 0 || dupeLen.length > 1) foldInputs[i].value = "Folder " + (i * 1 + 1);
                             newNames.push(foldInputs[i].value);
                         }
+                    }
+                    if (!renaming) {
                         chrome.runtime.sendMessage({message: "Save Folder Name", oldNames: prev, newNames: newNames});
                         prev = []; 
                     }

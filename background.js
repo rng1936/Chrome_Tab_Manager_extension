@@ -60,7 +60,7 @@ chrome.runtime.onMessage.addListener(
                 for (let i = 0; i < oldKeys.length; ++i) {
                     let oldKey = oldKeys[i];
                     chrome.storage.sync.get(oldKey).then((result) => {
-                        let val = result.values;
+                        let val = result[oldKey];
                         chrome.storage.sync.remove(oldKey, () => {
                             let newKey = newKeys[i];
                             chrome.storage.sync.set({[newKey]: val});
