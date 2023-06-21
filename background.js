@@ -1,65 +1,106 @@
-
 chrome.runtime.onMessage.addListener(
     async (request) => {
         let action = request.message;
         switch (action) {
             case "Save":
                 await chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-                    saveTab(tabs[0]);
+                    saveTab(request.folder, tabs);
                 });
                 break;
             case "Save all":
                 await chrome.tabs.query({currentWindow: true}, (tabs) => {
-                    for (let tab of tabs) {
-                        saveTab(tab);
-                    }
+                    saveTab(request.folder, tabs);
                 });
                 break;
             case "Load":
-                chrome.storage.sync.get(null, (objOfKeys) => {
-                    for (var val in objOfKeys) {
-                        let curTab = objOfKeys[val];
-                        chrome.tabs.create({'url': curTab.url});
+                let folder = request.folder;
+                chrome.storage.sync.get(folder).then((result) => {
+                    const tabs = result[folder];
+                    for (let tab of tabs) {
+                        chrome.tabs.create({url: tab.url});
                     }
                 });
                 break;
             case "Clear":
-                clearStorage();
+                clearFolder(request.folder);
+                display(request.folder);
                 break;
             case "Display":
-                display();
+                display(request.folder);
                 break;
             case "Remove Saved Tab":
-                chrome.storage.sync.remove([request.key], () => {
-                    chrome.runtime.sendMessage({message: "empty"});
-                    display();
+                chrome.storage.sync.get(request.folder).then((result) => {
+                    let folderTabs = result[request.folder];
+                    folderTabs = folderTabs.filter(tabs => tabs.url !== request.tabToDel.url);
+                    chrome.storage.sync.set({[request.folder]: folderTabs}).then(() => {
+                        display(request.folder);
+                    });
                 });
+                break;
+            case "Load Folder Names":
+                // folder names are stored in chrome.storage.sync in an array
+                chrome.storage.sync.get("uS3rK3y5./cq17").then((result) => {
+                    if (result.hasOwnProperty("uS3rK3y5./cq17")) {  // checks if designated space exists
+                        chrome.runtime.sendMessage({req: "Load Folders", folderNames: result["uS3rK3y5./cq17"]});
+                    } else {
+                        let folderNames = ["Folder 1", "Folder 2", "Folder 3", "Folder 4", "Folder 5", "Folder 6"];
+                        chrome.storage.sync.set({"uS3rK3y5./cq17": folderNames});
+                    }
+                });
+                break;
+            case "Save Folder Name":
+                let oldKeys = request.oldNames;
+                let newKeys = request.newNames;
+                
+                console.log(oldKeys);
+                console.log(newKeys);
+                // // update array of folder names
+                // chrome.storage.sync.get("uS3rK3y5./cq17").then((result) => {
+                //     let folderNames = result["uS3rK3y5./cq17"];
+                //     folderNames[index] = newKey;
+                //     console.log(folderNames);
+                //     chrome.storage.sync.remove("uS3rK3y5./cq17", () => {
+                //         chrome.storage.sync.set({"uS3rK3y5./cq17": folderNames});
+                //     });
+                // });
+                // // update chrome.storage.sync keys
+                // chrome.storage.sync.get(oldKey).then((result) => {
+                //     let val = result.values;
+                //     chrome.storage.sync.remove(oldKey, () => {
+                //         chrome.storage.sync.set({[newKey]: val});
+                //     });
+                // });
                 break;
         }
 })
 
-function saveTab(tab) {
-    let key = tab.url;
-    chrome.storage.sync.get([key], (result) => {
-        if (Object.keys(result).length === 0) {
-            chrome.storage.sync.set({[key] : tab}, () => {
-                chrome.runtime.sendMessage({title : tab.title, url : tab.url});
-            });
+function saveTab(folder, tabs) { 
+    tabs = [...new Map(tabs.map((t) => [t.url, t])).values()];
+    chrome.storage.sync.get(folder).then((result) => {
+        let tabsinFolder = result[folder] || [];
+        for (let tab of tabsinFolder) {
+            // check for duplicates in previous saved tabs
+            const duplicate = tabs.find(allTab => allTab.url === tab.url);
+            if (duplicate === undefined) {
+                tabs.push(tab);
+            }
         }
+        chrome.storage.sync.set({[folder]: tabs}).then(() => {
+            display(folder);
+        });
     });
 }
 
-function clearStorage() {
-    chrome.storage.sync.clear(() => {
-        chrome.runtime.sendMessage({message: "empty"});
-    });
+function clearFolder(folder) {
+    chrome.storage.sync.remove(folder);
 }
 
-function display() { 
-    chrome.storage.sync.get(null, (objOfKeys) => {
-        for (var val in objOfKeys) {
-            let curTab = objOfKeys[val];
-            chrome.runtime.sendMessage({title : curTab.title, url : curTab.url});
+function display(folder) { 
+    chrome.storage.sync.get(folder).then((result) => {
+        let savedTabs = result[folder] || [];
+        chrome.runtime.sendMessage({req: "Clean"});
+        for (let tab of savedTabs) {
+            chrome.runtime.sendMessage({tab: tab});
         }
     });
 }

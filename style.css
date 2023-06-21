@@ -29,7 +29,7 @@ img {
 }
 
 img.option:hover {
-    background-color: lightslategray;
+    background-color:lightslategray;
 }
 
 #line {
@@ -49,23 +49,33 @@ a {
 }
 
 a:hover {
-    background-color: lightgrey;
+    background-color:lightgrey;
     text-decoration:line-through;
 }
 
-input:hover {
-    background-color: lightgrey;
-}
-
-input:focus {
-    box-shadow: 0 0 5px blue;
+#folderField {
+    display:flex;
+  }
+  
+.folders {
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background-color:white;
     border:none;
-    outline:0;
+    padding:0;
+}
+  
+.foldName {
+    width:100%;
+    height:100%;
+    box-sizing:border-box;
+    color:black;
+    font-weight:bold;
+    padding:0;
 }
 
-input {
-    display:inline;
-    width:50px;
-    padding:0;
-    margin:0;
+.foldName:hover {
+    background-color:lightgrey;
 }
