@@ -52,24 +52,21 @@ chrome.runtime.onMessage.addListener(
                 let oldKeys = request.oldNames;
                 let newKeys = request.newNames;
                 
-                console.log(oldKeys);
-                console.log(newKeys);
-                // // update array of folder names
-                // chrome.storage.sync.get("uS3rK3y5./cq17").then((result) => {
-                //     let folderNames = result["uS3rK3y5./cq17"];
-                //     folderNames[index] = newKey;
-                //     console.log(folderNames);
-                //     chrome.storage.sync.remove("uS3rK3y5./cq17", () => {
-                //         chrome.storage.sync.set({"uS3rK3y5./cq17": folderNames});
-                //     });
-                // });
-                // // update chrome.storage.sync keys
-                // chrome.storage.sync.get(oldKey).then((result) => {
-                //     let val = result.values;
-                //     chrome.storage.sync.remove(oldKey, () => {
-                //         chrome.storage.sync.set({[newKey]: val});
-                //     });
-                // });
+                // update array of folder names
+                chrome.storage.sync.remove("uS3rK3y5./cq17", () => {
+                    chrome.storage.sync.set({"uS3rK3y5./cq17": newKeys});
+                });
+                // update chrome.storage.sync keys
+                for (let i = 0; i < oldKeys.length; ++i) {
+                    let oldKey = oldKeys[i];
+                    chrome.storage.sync.get(oldKey).then((result) => {
+                        let val = result.values;
+                        chrome.storage.sync.remove(oldKey, () => {
+                            let newKey = newKeys[i];
+                            chrome.storage.sync.set({[newKey]: val});
+                        });
+                    });
+                }
                 break;
         }
 })

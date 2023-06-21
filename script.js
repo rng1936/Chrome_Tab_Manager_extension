@@ -47,7 +47,7 @@ function eventsSetup() {
                     options.innerHTML = "Delete All Saved Tabs";
                     break;
                 case 4:
-                    options.innerHTML = "Edit/Save Folder Names (WIP)";
+                    options.innerHTML = "Edit/Save Folder Names";
                     break;
             }
         }
@@ -78,14 +78,12 @@ function eventsSetup() {
                     } else {
                         let newNames = [];
                         for (let i = 0; i < foldInputs.length; ++i) {
-                            if (foldInputs[i].value != prev[i]) {
-                                const newFoldName = foldInputs[i].value;
-                                const dupeLen = Array.from(foldInputs).filter(val => val.value === newFoldName);
-                                
-                                // prevent duplicate or empty folder names
-                                if (newFoldName.trim().length == 0 || dupeLen.length > 1) foldInputs[i].value = "Folder " + (i * 1 + 1);
-                                newNames.push(foldInputs[i].value);
-                            }
+                            const newFoldName = foldInputs[i].value;
+                            const dupeLen = Array.from(foldInputs).filter(val => val.value === newFoldName);
+                            
+                            // prevent duplicate or empty folder names
+                            if (newFoldName.trim().length == 0 || dupeLen.length > 1) foldInputs[i].value = "Folder " + (i * 1 + 1);
+                            newNames.push(foldInputs[i].value);
                         }
                         chrome.runtime.sendMessage({message: "Save Folder Name", oldNames: prev, newNames: newNames});
                         prev = []; 
