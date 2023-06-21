@@ -6,8 +6,12 @@
     "permissions": ["storage", "tabs"],
     "host_permissions": ["<all_urls>"],
     "action": {
+        "default_icon": "images/icon.png",
         "default_title": "Tab Manager",
         "default_popup": "index.html"
+    },
+    "icons": {
+        "100": "images/icon.png"
     },
     "background": {
         "service_worker": "background.js"

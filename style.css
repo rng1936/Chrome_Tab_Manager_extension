@@ -1,6 +1,7 @@
 body {
     height:600px;
     width:350px;
+    background-color:#EEEEEE;
 }
 
 #header {
@@ -49,7 +50,7 @@ a {
 }
 
 a:hover {
-    background-color:lightgrey;
+    background-color:lightgray;
     text-decoration:line-through;
 }
 
@@ -77,5 +78,5 @@ a:hover {
 }
 
 .foldName:hover {
-    background-color:lightgrey;
+    background-color:lightslategray;
 }
