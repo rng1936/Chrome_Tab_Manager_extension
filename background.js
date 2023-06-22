@@ -3,12 +3,12 @@ chrome.runtime.onMessage.addListener(
         let action = request.message;
         switch (action) {
             case "Save":
-                await chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+                chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
                     saveTab(request.folder, tabs);
                 });
                 break;
             case "Save all":
-                await chrome.tabs.query({currentWindow: true}, (tabs) => {
+                chrome.tabs.query({currentWindow: true}, (tabs) => {
                     saveTab(request.folder, tabs);
                 });
                 break;
