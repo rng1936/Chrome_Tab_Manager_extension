@@ -15,9 +15,13 @@ chrome.runtime.onMessage.addListener(
             case "Load":
                 let folder = request.folder;
                 chrome.storage.sync.get(folder).then((result) => {
+                    let first = true;
                     const tabs = result[folder];
                     for (let tab of tabs) {
-                        chrome.tabs.create({url: tab.url});
+                        if (first) {
+                            chrome.windows.create({url: tab.url, state: "maximized"});
+                            first = false;
+                        } else chrome.tabs.create({url: tab.url});
                     }
                 });
                 break;
