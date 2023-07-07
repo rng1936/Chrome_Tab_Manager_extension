@@ -1,6 +1,6 @@
 # Chrome_Tab_Manager_extension
 
-Chrome Extension that allows you to mass save and load tabs with a single click. This extension also features folders to better organize your tabs. To use, download the zip file and unzip the folder using a file decompression tool such as 7zip or WinRAR. Once the folder is unzipped, enter ```chrome://extensions/``` into the address bar. Turn on Developer mode on the top right and click Load unpacked on the top left. Select the unzipped folder. The extension is now ready to use. 
+Chrome Extension that allows you to mass save and load tabs with a single click. This extension also features folders to better organize your tabs. To use, you can download it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/chrome-tab-manager/khhbfclpklojbhpgnjbfpmhoagjcehab?hl=en&authuser=1) or download the zip file and unzip the folder using a file decompression tool such as 7zip or WinRAR. Once the folder is unzipped, enter ```chrome://extensions/``` into the address bar. Turn on Developer mode on the top right and click Load unpacked on the top left. Select the unzipped folder. The extension is now ready to use. 
 
 ### **Features:**
 - #### Save current tab to a folder.
