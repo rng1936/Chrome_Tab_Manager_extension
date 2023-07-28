@@ -98,7 +98,6 @@ function eventsSetup() {
 
     for (let i = 0; i < folders.length; ++i) {
         folders[i].onmouseover = () => {
-            console.log("yes");
             options.innerHTML = foldInputs[i].value;
         }
         folders[i].onmouseleave = () => {
