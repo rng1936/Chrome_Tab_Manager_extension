@@ -1,10 +1,9 @@
 
 let foldInputs = document.getElementsByClassName("foldName");
+let folders = document.getElementsByClassName("folders");
 let currFolder = 0;
 
 window.onload = () => {
-    let folders = document.getElementsByClassName("folders");
-
     chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
     chrome.runtime.sendMessage({message: "Load Folder Names"});
     folders[0].style.backgroundColor = "black";
@@ -93,6 +92,16 @@ function eventsSetup() {
         }
 
         buttons[i].onmouseleave = () => {
+            options.innerHTML = "Tab Manager";
+        }
+    }
+
+    for (let i = 0; i < folders.length; ++i) {
+        folders[i].onmouseover = () => {
+            console.log("yes");
+            options.innerHTML = foldInputs[i].value;
+        }
+        folders[i].onmouseleave = () => {
             options.innerHTML = "Tab Manager";
         }
     }
