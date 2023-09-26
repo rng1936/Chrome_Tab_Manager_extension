@@ -75,6 +75,7 @@ a:hover {
     color:black;
     font-weight:bold;
     padding:0;
+    pointer-events:none;
 }
 
 .foldName:hover {
