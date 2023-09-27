@@ -101,7 +101,7 @@ function display(folder) {
         let savedTabs = result[folder] || [];
         chrome.runtime.sendMessage({req: "Clean"});
         for (let tab of savedTabs) {
-            chrome.runtime.sendMessage({tab: tab});
+            chrome.runtime.sendMessage({req: "Create Tab", tab: tab});
         }
     });
 }

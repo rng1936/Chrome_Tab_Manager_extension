@@ -1,32 +1,16 @@
-
 let foldInputs = document.getElementsByClassName("foldName");
 let folders = document.getElementsByClassName("folders");
+let tabList = document.getElementById("contents");
 let currFolder = 0;
 
 window.onload = () => {
-    chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
-    chrome.runtime.sendMessage({message: "Load Folder Names"});
     currFolder = 0;
+    chrome.runtime.sendMessage({message: "Load Folder Names"});
+
     folders[currFolder].style.backgroundColor = "#676665";
     folders[currFolder].style.border = "thin solid black";
     
     eventsSetup();
-    for (let i = 0; i < folders.length; ++i) {
-        folders[i].addEventListener("click", () => {
-            foldInputs[i].focus();
-            foldInputs[i].select();
-
-            let prevColor = folders[currFolder].style.backgroundColor;
-            let prevBorder = folders[currFolder].style.border;
-            folders[currFolder].style.backgroundColor = folders[i].style.backgroundColor;    // unhighlight previous focused folder
-            folders[currFolder].style.border = folders[i].style.border;
-            currFolder = i;
-            folders[currFolder].style.backgroundColor = prevColor;
-            folders[currFolder].style.border = prevBorder;
-            
-            chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
-        });
-    }
 }
 
 function eventsSetup() {
@@ -100,6 +84,23 @@ function eventsSetup() {
         buttons[i].onmouseleave = () => {
             options.innerHTML = "Tab Manager";
         }
+
+        for (let i = 0; i < folders.length; ++i) {
+            folders[i].addEventListener("click", () => {
+                foldInputs[i].focus();
+                foldInputs[i].select();
+    
+                let prevColor = folders[currFolder].style.backgroundColor;
+                let prevBorder = folders[currFolder].style.border;
+                folders[currFolder].style.backgroundColor = folders[i].style.backgroundColor;    // unhighlight previous focused folder
+                folders[currFolder].style.border = folders[i].style.border;
+                currFolder = i;
+                folders[currFolder].style.backgroundColor = prevColor;
+                folders[currFolder].style.border = prevBorder;
+                
+                chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
+            });
+        }
     }
 
     for (let i = 0; i < folders.length; ++i) {
@@ -112,7 +113,6 @@ function eventsSetup() {
     }
 }
 
-let tabList = document.getElementById("contents");
 chrome.runtime.onMessage.addListener(
     (request) => {
         if (request.req === "Clean") tabList.innerHTML = "";
@@ -121,7 +121,8 @@ chrome.runtime.onMessage.addListener(
             for (let i = 0; i < names.length; ++i) {
                 foldInputs[i].value = names[i];
             }
-        } else {
+            chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
+        } else if (request.req === "Create Tab") {
             // create output display
             let tab = request.tab;
             let anchor = document.createElement("a");
@@ -132,4 +133,4 @@ chrome.runtime.onMessage.addListener(
             });
             tabList.appendChild(anchor);
         }
-})
+});
