@@ -31,6 +31,7 @@ img {
 
 img.option:hover {
     background-color:lightslategray;
+    cursor: pointer;
 }
 
 #line {
@@ -56,15 +57,15 @@ a:hover {
 
 #folderField {
     display:flex;
-  }
-  
+}
+
 .folders {
     flex:1;
-    display:flex;
     align-items:center;
     justify-content:center;
     background-color:white;
-    border:none;
+    border:transparent;
+    border-radius:5px;
     padding:0;
 }
   
@@ -72,12 +73,14 @@ a:hover {
     width:100%;
     height:100%;
     box-sizing:border-box;
+    border-radius:5px;
     color:black;
     font-weight:bold;
     padding:0;
     pointer-events:none;
 }
 
-.foldName:hover {
+.folders:hover {
     background-color:lightslategray;
+    cursor: pointer;
 }

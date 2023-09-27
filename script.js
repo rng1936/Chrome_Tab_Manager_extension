@@ -6,8 +6,9 @@ let currFolder = 0;
 window.onload = () => {
     chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
     chrome.runtime.sendMessage({message: "Load Folder Names"});
-    folders[0].style.backgroundColor = "black";
     currFolder = 0;
+    folders[currFolder].style.backgroundColor = "#393635";
+    folders[currFolder].style.border = "thin solid black";
     
     eventsSetup();
     for (let i = 0; i < folders.length; ++i) {
@@ -15,9 +16,14 @@ window.onload = () => {
             foldInputs[i].focus();
             foldInputs[i].select();
 
-            folders[currFolder].style.backgroundColor = "white";    // unhighlight previous focused folder
+            let prevColor = folders[currFolder].style.backgroundColor;
+            let prevBorder = folders[currFolder].style.border;
+            folders[currFolder].style.backgroundColor = folders[i].style.backgroundColor;    // unhighlight previous focused folder
+            folders[currFolder].style.border = folders[i].style.border;
             currFolder = i;
-            folders[currFolder].style.backgroundColor = "black";
+            folders[currFolder].style.backgroundColor = prevColor;
+            folders[currFolder].style.border = prevBorder;
+            
             chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
         });
     }
