@@ -7,7 +7,7 @@ window.onload = () => {
     chrome.runtime.sendMessage({message: "Display", folder: foldInputs[currFolder].value});
     chrome.runtime.sendMessage({message: "Load Folder Names"});
     currFolder = 0;
-    folders[currFolder].style.backgroundColor = "#393635";
+    folders[currFolder].style.backgroundColor = "#676665";
     folders[currFolder].style.border = "thin solid black";
     
     eventsSetup();
